@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "list.h"
+#include "hashmap.h"
 
 #define MAX_PUNTOS 100
 #define MAX_TURISTAS 100
