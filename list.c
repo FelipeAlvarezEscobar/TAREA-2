@@ -1,23 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "list.h"
-
-typedef struct Node Node;
 
 struct Node {
     void * data;
-    Node * next;
-    Node * prev;
+    struct Node * next;
+    struct Node * prev;
 };
 
 struct List {
-    Node * head;
-    Node * tail;
-    Node * current;
+    struct Node * head;
+    struct Node * tail;
+    struct Node * current;
 };
-
-typedef List List;
 
 Node * createNode(void * data) {
     Node * new = (Node *)malloc(sizeof(Node));
@@ -146,6 +143,62 @@ void cleanList(List * list) {
     while (list->head != NULL) {
         popFront(list);
     }
+}
+
+void * searchList(List * list, const void * data, int (*cmp)(const void *, const void *)) {
+    assert(list != NULL && cmp != NULL);
+
+    list->current = list->head;
+    while (list->current != NULL) {
+        if (cmp(list->current->data, data) == 0) {
+            return (void *)list->current->data;
+        }
+        list->current = list->current->next;
+    }
+    return NULL;
+}
+
+// Función para agregar un elemento al final de la lista
+void appendList(List * list, const void * data) {
+    assert(list != NULL);
+
+    Node * newNode = createNode((void *)data);
+    if (list->head == NULL) {
+        list->head = newNode;
+        list->tail = newNode;
+        list->current = newNode;
+    } else {
+        list->tail->next = newNode;
+        newNode->prev = list->tail;
+        list->tail = newNode;
+    }
+}
+
+List * getValues(List * list) {
+    // Crea una nueva lista para almacenar los valores
+    List * valuesList = createList();
+
+    // Recorre la lista original y agrega los valores a la nueva lista
+    list->current = list->head;
+    while (list->current != NULL) {
+        pushBack(valuesList, list->current->data);
+        list->current = list->current->next;
+    }
+
+    // Restaura el puntero 'current' de la lista original
+    list->current = list->head;
+
+    return valuesList;
+}
+
+List * getValues(HashMap * map);
+
+
+// Implementación de next para List
+void *next(List *list) {
+    if (list == NULL || list->head == NULL || list->current == NULL || list->current->next == NULL) return NULL;
+    list->current = list->current->next;
+    return (void *)list->current->data;
 }
 
 void insert(List *lp, const void *data){
