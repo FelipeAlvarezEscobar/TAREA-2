@@ -1,26 +1,32 @@
 #ifndef HashMap_h
 #define HashMap_h
 
+// Definición de las estructuras
+typedef struct HashMapEntry {
+    char *key;
+    void *value;
+    struct HashMapEntry *next;
+} HashMapEntry;
 
-typedef struct HashMap HashMap;
+typedef struct {
+    HashMapEntry **table;
+    int capacity;
+    int size;
+} HashMap;
 
-typedef struct Pair {
-     char * key;
-     void * value;
-} Pair;
+// Definición de ValuesList
+typedef struct {
+    void **values;
+    int size;
+    int capacity;
+} ValuesList;
 
-HashMap * createMap(long capacity);
-
-void insertMap(HashMap * table, char * key, void * value);
-
-void eraseMap(HashMap * table, char * key);
-
-Pair * searchMap(HashMap * table, char * key);
-
-Pair * firstMap(HashMap * table);
-
-Pair * nextMap(HashMap * table);
-
-void enlarge(HashMap * map);
+HashMap *createMap(int capacity);
+void insertMap(HashMap *map, const char *key, void *value);
+void *searchMap(HashMap *map, const char *key);
+void eraseMap(HashMap *map, const char *key);
+void freeMap(HashMap *map);
+ValuesList *getHashMapValues(HashMap *map); // Cambio de nombre aquí
+List *getValues(HashMap *map);
 
 #endif /* HashMap_h */
