@@ -7,7 +7,7 @@ List * createList(void);
 
 void * firstList(List * list);
 
-void * nextList(List * list);
+void *next(List *list);
 
 void * lastList(List * list);
 
@@ -28,5 +28,9 @@ void * popCurrent(List * list);
 void cleanList(List * list);
 
 void insert(List *lp, const void *data);
+
+void *searchList(List *list, const void *data, int (*cmp)(const void *, const void *));
+
+void appendList(List *list, const void *data);
 
 #endif /* List_h */
